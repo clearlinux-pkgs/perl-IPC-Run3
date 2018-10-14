@@ -4,19 +4,28 @@
 #
 Name     : perl-IPC-Run3
 Version  : 0.048
-Release  : 1
+Release  : 2
 URL      : https://cpan.metacpan.org/authors/id/R/RJ/RJBS/IPC-Run3-0.048.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/R/RJ/RJBS/IPC-Run3-0.048.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libi/libipc-run3-perl/libipc-run3-perl_0.048-1.debian.tar.xz
 Summary  : 'run a subprocess with input/ouput redirection'
 Group    : Development/Tools
 License  : GPL-2.0
-Requires: perl-IPC-Run3-license
-Requires: perl-IPC-Run3-man
+Requires: perl-IPC-Run3-license = %{version}-%{release}
+BuildRequires : buildreq-cpan
 
 %description
 IPC::Run3 - run a subprocess in batch mode (a la system) on Unix, Win32, etc.
 SYNOPSIS
+
+%package dev
+Summary: dev components for the perl-IPC-Run3 package.
+Group: Development
+Provides: perl-IPC-Run3-devel = %{version}-%{release}
+
+%description dev
+dev components for the perl-IPC-Run3 package.
+
 
 %package license
 Summary: license components for the perl-IPC-Run3 package.
@@ -26,19 +35,11 @@ Group: Default
 license components for the perl-IPC-Run3 package.
 
 
-%package man
-Summary: man components for the perl-IPC-Run3 package.
-Group: Default
-
-%description man
-man components for the perl-IPC-Run3 package.
-
-
 %prep
-tar -xf %{SOURCE1}
-cd ..
 %setup -q -n IPC-Run3-0.048
-mkdir -p %{_topdir}/BUILD/IPC-Run3-0.048/deblicense/
+cd ..
+%setup -q -T -D -n IPC-Run3-0.048 -b 1
+mkdir -p deblicense/
 mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/IPC-Run3-0.048/deblicense/
 
 %build
@@ -63,12 +64,12 @@ make TEST_VERBOSE=1 test
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/perl-IPC-Run3
-cp LICENSE %{buildroot}/usr/share/doc/perl-IPC-Run3/LICENSE
+mkdir -p %{buildroot}/usr/share/package-licenses/perl-IPC-Run3
+cp LICENSE %{buildroot}/usr/share/package-licenses/perl-IPC-Run3/LICENSE
 if test -f Makefile.PL; then
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
+make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
-./Build install --installdirs=site --destdir=%{buildroot}
+./Build install --installdirs=vendor --destdir=%{buildroot}
 fi
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null ';'
@@ -77,18 +78,14 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/IPC/Run3.pm
-/usr/lib/perl5/site_perl/5.26.1/IPC/Run3/ProfArrayBuffer.pm
-/usr/lib/perl5/site_perl/5.26.1/IPC/Run3/ProfLogReader.pm
-/usr/lib/perl5/site_perl/5.26.1/IPC/Run3/ProfLogger.pm
-/usr/lib/perl5/site_perl/5.26.1/IPC/Run3/ProfPP.pm
-/usr/lib/perl5/site_perl/5.26.1/IPC/Run3/ProfReporter.pm
+/usr/lib/perl5/vendor_perl/5.26.1/IPC/Run3.pm
+/usr/lib/perl5/vendor_perl/5.26.1/IPC/Run3/ProfArrayBuffer.pm
+/usr/lib/perl5/vendor_perl/5.26.1/IPC/Run3/ProfLogReader.pm
+/usr/lib/perl5/vendor_perl/5.26.1/IPC/Run3/ProfLogger.pm
+/usr/lib/perl5/vendor_perl/5.26.1/IPC/Run3/ProfPP.pm
+/usr/lib/perl5/vendor_perl/5.26.1/IPC/Run3/ProfReporter.pm
 
-%files license
-%defattr(-,root,root,-)
-/usr/share/doc/perl-IPC-Run3/LICENSE
-
-%files man
+%files dev
 %defattr(-,root,root,-)
 /usr/share/man/man3/IPC::Run3.3
 /usr/share/man/man3/IPC::Run3::ProfArrayBuffer.3
@@ -96,3 +93,7 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 /usr/share/man/man3/IPC::Run3::ProfLogger.3
 /usr/share/man/man3/IPC::Run3::ProfPP.3
 /usr/share/man/man3/IPC::Run3::ProfReporter.3
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/perl-IPC-Run3/LICENSE
