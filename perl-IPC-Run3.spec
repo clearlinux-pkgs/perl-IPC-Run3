@@ -78,12 +78,12 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.1IPC/Run3.pm
-/usr/lib/perl5/vendor_perl/5.28.1IPC/Run3/ProfArrayBuffer.pm
-/usr/lib/perl5/vendor_perl/5.28.1IPC/Run3/ProfLogReader.pm
-/usr/lib/perl5/vendor_perl/5.28.1IPC/Run3/ProfLogger.pm
-/usr/lib/perl5/vendor_perl/5.28.1IPC/Run3/ProfPP.pm
-/usr/lib/perl5/vendor_perl/5.28.1IPC/Run3/ProfReporter.pm
+/usr/lib/perl5/vendor_perl/5.28.1/IPC/Run3.pm
+/usr/lib/perl5/vendor_perl/5.28.1/IPC/Run3/ProfArrayBuffer.pm
+/usr/lib/perl5/vendor_perl/5.28.1/IPC/Run3/ProfLogReader.pm
+/usr/lib/perl5/vendor_perl/5.28.1/IPC/Run3/ProfLogger.pm
+/usr/lib/perl5/vendor_perl/5.28.1/IPC/Run3/ProfPP.pm
+/usr/lib/perl5/vendor_perl/5.28.1/IPC/Run3/ProfReporter.pm
 
 %files dev
 %defattr(-,root,root,-)
