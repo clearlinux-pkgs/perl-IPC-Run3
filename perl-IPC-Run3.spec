@@ -4,14 +4,15 @@
 #
 Name     : perl-IPC-Run3
 Version  : 0.048
-Release  : 10
+Release  : 11
 URL      : https://cpan.metacpan.org/authors/id/R/RJ/RJBS/IPC-Run3-0.048.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/R/RJ/RJBS/IPC-Run3-0.048.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libi/libipc-run3-perl/libipc-run3-perl_0.048-1.debian.tar.xz
 Summary  : 'run a subprocess with input/ouput redirection'
 Group    : Development/Tools
-License  : GPL-2.0
+License  : BSD-3-Clause GPL-2.0 MIT
 Requires: perl-IPC-Run3-license = %{version}-%{release}
+Requires: perl-IPC-Run3-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
 
 %description
@@ -22,6 +23,7 @@ SYNOPSIS
 Summary: dev components for the perl-IPC-Run3 package.
 Group: Development
 Provides: perl-IPC-Run3-devel = %{version}-%{release}
+Requires: perl-IPC-Run3 = %{version}-%{release}
 
 %description dev
 dev components for the perl-IPC-Run3 package.
@@ -35,18 +37,28 @@ Group: Default
 license components for the perl-IPC-Run3 package.
 
 
+%package perl
+Summary: perl components for the perl-IPC-Run3 package.
+Group: Default
+Requires: perl-IPC-Run3 = %{version}-%{release}
+
+%description perl
+perl components for the perl-IPC-Run3 package.
+
+
 %prep
 %setup -q -n IPC-Run3-0.048
-cd ..
-%setup -q -T -D -n IPC-Run3-0.048 -b 1
+cd %{_builddir}
+tar xf %{_sourcedir}/libipc-run3-perl_0.048-1.debian.tar.xz
+cd %{_builddir}/IPC-Run3-0.048
 mkdir -p deblicense/
-mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/IPC-Run3-0.048/deblicense/
+cp -r %{_builddir}/debian/* %{_builddir}/IPC-Run3-0.048/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
+export LANG=C.UTF-8
 if test -f Makefile.PL; then
 %{__perl} Makefile.PL
 make  %{?_smp_mflags}
@@ -56,7 +68,7 @@ else
 fi
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -65,7 +77,7 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-IPC-Run3
-cp LICENSE %{buildroot}/usr/share/package-licenses/perl-IPC-Run3/LICENSE
+cp %{_builddir}/IPC-Run3-0.048/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-IPC-Run3/c049809f0f110ce729d1d3d865e859a199cb0725
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -78,12 +90,6 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/IPC/Run3.pm
-/usr/lib/perl5/vendor_perl/5.28.2/IPC/Run3/ProfArrayBuffer.pm
-/usr/lib/perl5/vendor_perl/5.28.2/IPC/Run3/ProfLogReader.pm
-/usr/lib/perl5/vendor_perl/5.28.2/IPC/Run3/ProfLogger.pm
-/usr/lib/perl5/vendor_perl/5.28.2/IPC/Run3/ProfPP.pm
-/usr/lib/perl5/vendor_perl/5.28.2/IPC/Run3/ProfReporter.pm
 
 %files dev
 %defattr(-,root,root,-)
@@ -96,4 +102,13 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/perl-IPC-Run3/LICENSE
+/usr/share/package-licenses/perl-IPC-Run3/c049809f0f110ce729d1d3d865e859a199cb0725
+
+%files perl
+%defattr(-,root,root,-)
+/usr/lib/perl5/vendor_perl/5.30.1/IPC/Run3.pm
+/usr/lib/perl5/vendor_perl/5.30.1/IPC/Run3/ProfArrayBuffer.pm
+/usr/lib/perl5/vendor_perl/5.30.1/IPC/Run3/ProfLogReader.pm
+/usr/lib/perl5/vendor_perl/5.30.1/IPC/Run3/ProfLogger.pm
+/usr/lib/perl5/vendor_perl/5.30.1/IPC/Run3/ProfPP.pm
+/usr/lib/perl5/vendor_perl/5.30.1/IPC/Run3/ProfReporter.pm
