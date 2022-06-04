@@ -4,7 +4,7 @@
 #
 Name     : perl-IPC-Run3
 Version  : 0.048
-Release  : 20
+Release  : 21
 URL      : https://cpan.metacpan.org/authors/id/R/RJ/RJBS/IPC-Run3-0.048.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/R/RJ/RJBS/IPC-Run3-0.048.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libi/libipc-run3-perl/libipc-run3-perl_0.048-1.debian.tar.xz
@@ -106,9 +106,4 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.34.0/IPC/Run3.pm
-/usr/lib/perl5/vendor_perl/5.34.0/IPC/Run3/ProfArrayBuffer.pm
-/usr/lib/perl5/vendor_perl/5.34.0/IPC/Run3/ProfLogReader.pm
-/usr/lib/perl5/vendor_perl/5.34.0/IPC/Run3/ProfLogger.pm
-/usr/lib/perl5/vendor_perl/5.34.0/IPC/Run3/ProfPP.pm
-/usr/lib/perl5/vendor_perl/5.34.0/IPC/Run3/ProfReporter.pm
+/usr/lib/perl5/*
